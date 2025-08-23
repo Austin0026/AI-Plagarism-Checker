@@ -13,6 +13,24 @@ type State = {
   error?: string;
 };
 
+function calculatePlagiarismScore(cosineSim: number): number {
+  let score: number;
+  if (cosineSim >= 0.95) {
+    score = 100; // Exact or near-exact copy
+  } else if (cosineSim >= 0.75) {
+    // Range 75–95% similarity → 50–99% plagiarism
+    score = 50 + (cosineSim - 0.75) * 200;
+  } else if (cosineSim >= 0.5) {
+    // Range 50–75% similarity → 20–50% plagiarism
+    score = 20 + (cosineSim - 0.5) * 60;
+  } else {
+    // Below 50% → low plagiarism
+    score = cosineSim * 20;
+  }
+  return Math.round(score);
+}
+
+
 export async function checkPlagiarism(
   prevState: State,
   formData: FormData
@@ -36,7 +54,8 @@ export async function checkPlagiarism(
   try {
     const result = await calculateSimilarity({ text1, text2 });
     if (result && typeof result.similarityScore === 'number') {
-      return { score: result.similarityScore };
+      const plagiarismScore = calculatePlagiarismScore(result.similarityScore);
+      return { score: plagiarismScore };
     }
     return { error: "Failed to get a valid similarity score from the AI." };
   } catch (e) {

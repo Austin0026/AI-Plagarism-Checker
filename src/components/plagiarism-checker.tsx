@@ -16,7 +16,7 @@ const initialState = {
   error: undefined,
 };
 
-const PLAGIARISM_THRESHOLD = 30; // 30%
+const PLAGIARISM_THRESHOLD = 50; // 50%
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -50,13 +50,13 @@ export function PlagiarismChecker() {
     }
   }, [state.error, toast]);
 
-  const score = state.score !== undefined ? Math.round(state.score * 100) : null;
-  const isPlagiarized = score !== null && score > PLAGIARISM_THRESHOLD;
+  const score = state.score;
+  const isPlagiarized = score !== undefined && score > PLAGIARISM_THRESHOLD;
 
   const progressColor = isPlagiarized ? "hsl(var(--accent))" : "hsl(var(--primary))";
 
   const getResultMessage = () => {
-    if (score === null) return null;
+    if (score === undefined) return null;
     if (score > 75) return "High similarity detected. Strong indication of plagiarism.";
     if (score > PLAGIARISM_THRESHOLD) return "Moderate similarity detected. Potential plagiarism found.";
     return "Low similarity detected. Unlikely to be plagiarized.";
@@ -104,14 +104,14 @@ export function PlagiarismChecker() {
         </div>
       </form>
 
-      {state.score !== undefined && score !== null && (
+      {score !== undefined && (
         <Card>
           <CardHeader>
             <CardTitle>Analysis Result</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between gap-4">
-              <span className="font-medium">Similarity Score</span>
+              <span className="font-medium">Plagiarism Score</span>
               <span className="text-2xl font-bold" style={{ color: progressColor }}>
                 {score}%
               </span>
