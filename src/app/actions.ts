@@ -16,18 +16,20 @@ type State = {
 function calculatePlagiarismScore(cosineSim: number): number {
   let score: number;
   if (cosineSim >= 0.95) {
-    score = 100; // Exact or near-exact copy
+    // High similarity, likely a direct copy. Score is 95-100%.
+    score = 95 + (cosineSim - 0.95) * 100;
   } else if (cosineSim >= 0.75) {
-    // Range 75–95% similarity → 50–99% plagiarism
-    score = 50 + (cosineSim - 0.75) * 200;
+    // Moderate similarity, likely paraphrased. Score is 60-85%.
+    score = 60 + (cosineSim - 0.75) * 125;
   } else if (cosineSim >= 0.5) {
-    // Range 50–75% similarity → 20–50% plagiarism
-    score = 20 + (cosineSim - 0.5) * 60;
+    // Low to moderate similarity. Score is 20-50%.
+    score = 20 + (cosineSim - 0.5) * 120;
   } else {
-    // Below 50% → low plagiarism
-    score = cosineSim * 20;
+    // Very low similarity. Score is 0-20%.
+    score = cosineSim * 40;
   }
-  return Math.round(score);
+  // Ensure score is between 0 and 100 and rounded.
+  return Math.round(Math.max(0, Math.min(100, score)));
 }
 
 
