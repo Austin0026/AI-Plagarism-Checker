@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useEffect, useState, useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import { checkPlagiarism } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,7 +16,7 @@ const initialState = {
   error: undefined,
 };
 
-const PLAGIARISM_THRESHOLD = 50; // 50%
+const PLAGIARISM_THRESHOLD = 75; 
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -35,7 +35,7 @@ function SubmitButton() {
 }
 
 export function PlagiarismChecker() {
-  const [state, formAction] = useFormState(checkPlagiarism, initialState);
+  const [state, formAction] = useActionState(checkPlagiarism, initialState);
   const [text1, setText1] = useState("");
   const [text2, setText2] = useState("");
   const { toast } = useToast();
@@ -51,14 +51,19 @@ export function PlagiarismChecker() {
   }, [state.error, toast]);
 
   const score = state.score;
-  const isPlagiarized = score !== undefined && score > PLAGIARISM_THRESHOLD;
+  const isPlagiarized = score !== undefined && score >= PLAGIARISM_THRESHOLD;
+  const isHighPlagiarism = score !== undefined && score >= 95;
 
-  const progressColor = isPlagiarized ? "hsl(var(--accent))" : "hsl(var(--primary))";
+  const progressColor = isHighPlagiarism
+    ? "hsl(var(--destructive))"
+    : isPlagiarized
+    ? "hsl(var(--accent))"
+    : "hsl(var(--primary))";
 
   const getResultMessage = () => {
     if (score === undefined) return null;
-    if (score > 75) return "High similarity detected. Strong indication of plagiarism.";
-    if (score > PLAGIARISM_THRESHOLD) return "Moderate similarity detected. Potential plagiarism found.";
+    if (isHighPlagiarism) return "High similarity detected. Strong indication of a direct copy.";
+    if (isPlagiarized) return "Moderate similarity detected. Potential paraphrasing or plagiarism found.";
     return "Low similarity detected. Unlikely to be plagiarized.";
   };
 
