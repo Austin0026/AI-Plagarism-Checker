@@ -13,10 +13,12 @@ import { useToast } from "@/hooks/use-toast";
 
 const initialState = {
   score: undefined,
+  reason: undefined,
   error: undefined,
 };
 
-const PLAGIARISM_THRESHOLD = 75; 
+const PLAGIARISM_THRESHOLD = 70;
+const HIGH_PLAGIARISM_THRESHOLD = 90;
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -51,8 +53,10 @@ export function PlagiarismChecker() {
   }, [state.error, toast]);
 
   const score = state.score;
+  const reason = state.reason;
+
+  const isHighPlagiarism = score !== undefined && score >= HIGH_PLAGIARISM_THRESHOLD;
   const isPlagiarized = score !== undefined && score >= PLAGIARISM_THRESHOLD;
-  const isHighPlagiarism = score !== undefined && score >= 95;
 
   const progressColor = isHighPlagiarism
     ? "hsl(var(--destructive))"
@@ -60,11 +64,11 @@ export function PlagiarismChecker() {
     ? "hsl(var(--accent))"
     : "hsl(var(--primary))";
 
-  const getResultMessage = () => {
+  const getResultTitle = () => {
     if (score === undefined) return null;
-    if (isHighPlagiarism) return "High similarity detected. Strong indication of a direct copy.";
-    if (isPlagiarized) return "Moderate similarity detected. Potential paraphrasing or plagiarism found.";
-    return "Low similarity detected. Unlikely to be plagiarized.";
+    if (isHighPlagiarism) return "High Plagiarism Detected";
+    if (isPlagiarized) return "Potential Plagiarism Detected";
+    return "Looking Good!";
   };
 
   return (
@@ -109,7 +113,7 @@ export function PlagiarismChecker() {
         </div>
       </form>
 
-      {score !== undefined && (
+      {score !== undefined && reason && (
         <Card>
           <CardHeader>
             <CardTitle>Analysis Result</CardTitle>
@@ -132,9 +136,9 @@ export function PlagiarismChecker() {
             />
             <Alert variant={isPlagiarized ? "destructive" : "default"}>
               <AlertCircle className="h-4 w-4" />
-              <AlertTitle>{isPlagiarized ? "Plagiarism Alert" : "Looking Good!"}</AlertTitle>
+              <AlertTitle>{getResultTitle()}</AlertTitle>
               <AlertDescription>
-                {getResultMessage()}
+                {reason}
               </AlertDescription>
             </Alert>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">

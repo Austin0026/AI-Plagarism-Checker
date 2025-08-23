@@ -10,28 +10,9 @@ const PlagiarismCheckSchema = z.object({
 
 type State = {
   score?: number;
+  reason?: string;
   error?: string;
 };
-
-function calculatePlagiarismScore(cosineSim: number): number {
-  let score: number;
-  if (cosineSim >= 0.95) {
-    // High similarity, likely a direct copy. Score is 95-100%.
-    score = 95 + (cosineSim - 0.95) * 100;
-  } else if (cosineSim >= 0.75) {
-    // Moderate similarity, likely paraphrased. Score is 60-85%.
-    score = 60 + (cosineSim - 0.75) * 125;
-  } else if (cosineSim >= 0.5) {
-    // Low to moderate similarity. Score is 20-50%.
-    score = 20 + (cosineSim - 0.5) * 120;
-  } else {
-    // Very low similarity. Score is 0-20%.
-    score = cosineSim * 40;
-  }
-  // Ensure score is between 0 and 100 and rounded.
-  return Math.round(Math.max(0, Math.min(100, score)));
-}
-
 
 export async function checkPlagiarism(
   prevState: State,
@@ -55,11 +36,10 @@ export async function checkPlagiarism(
 
   try {
     const result = await calculateSimilarity({ text1, text2 });
-    if (result && typeof result.similarityScore === 'number') {
-      const plagiarismScore = calculatePlagiarismScore(result.similarityScore);
-      return { score: plagiarismScore };
+    if (result && typeof result.plagiarismScore === 'number' && typeof result.reason === 'string') {
+      return { score: result.plagiarismScore, reason: result.reason };
     }
-    return { error: "Failed to get a valid similarity score from the AI." };
+    return { error: "Failed to get a valid analysis from the AI." };
   } catch (e) {
     console.error(e);
     const errorMessage = e instanceof Error ? e.message : "An unknown error occurred.";
