@@ -23,7 +23,7 @@ const HIGH_PLAGIARISM_THRESHOLD = 90;
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" disabled={pending} className="w-full md:w-auto">
+    <Button type="submit" disabled={pending} size="lg" className="px-8 text-lg">
       {pending ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -61,7 +61,7 @@ export function PlagiarismChecker() {
   const progressColor = isHighPlagiarism
     ? "hsl(var(--destructive))"
     : isPlagiarized
-    ? "hsl(var(--accent))"
+    ? "hsl(35, 91%, 55%)"
     : "hsl(var(--primary))";
 
   const getResultTitle = () => {
@@ -71,11 +71,15 @@ export function PlagiarismChecker() {
     return "Looking Good!";
   };
 
+  const alertVariant = isHighPlagiarism ? "destructive" : isPlagiarized ? "default" : "default";
+  
+  const alertClasses = isPlagiarized && !isHighPlagiarism ? "bg-amber-500/10 border-amber-500/50 text-amber-700 dark:text-amber-400 [&>svg]:text-amber-700 dark:[&>svg]:text-amber-400" : "";
+
   return (
     <div className="mx-auto grid w-full max-w-6xl gap-6">
       <form action={formAction} className="grid gap-6">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <Card>
+          <Card className="shadow-lg">
             <CardHeader>
               <CardTitle>Original Text</CardTitle>
             </CardHeader>
@@ -83,7 +87,7 @@ export function PlagiarismChecker() {
               <Textarea
                 name="text1"
                 placeholder="Paste the first text here..."
-                className="min-h-[300px] resize-y"
+                className="min-h-[300px] resize-y text-base"
                 value={text1}
                 onChange={(e) => setText1(e.target.value)}
                 required
@@ -91,7 +95,7 @@ export function PlagiarismChecker() {
               <p className={`mt-2 text-sm ${text1.length < 100 ? 'text-destructive' : 'text-muted-foreground'}`}>{text1.length} / 100 characters minimum</p>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="shadow-lg">
             <CardHeader>
               <CardTitle>Comparison Text</CardTitle>
             </CardHeader>
@@ -99,7 +103,7 @@ export function PlagiarismChecker() {
               <Textarea
                 name="text2"
                 placeholder="Paste the second text here..."
-                className="min-h-[300px] resize-y"
+                className="min-h-[300px] resize-y text-base"
                 value={text2}
                 onChange={(e) => setText2(e.target.value)}
                 required
@@ -108,20 +112,20 @@ export function PlagiarismChecker() {
             </CardContent>
           </Card>
         </div>
-        <div className="flex justify-center">
+        <div className="flex justify-center pt-4">
           <SubmitButton />
         </div>
       </form>
 
       {score !== undefined && reason && (
-        <Card>
+        <Card className="shadow-xl">
           <CardHeader>
             <CardTitle>Analysis Result</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between gap-4">
-              <span className="font-medium">Plagiarism Score</span>
-              <span className="text-2xl font-bold" style={{ color: progressColor }}>
+              <span className="font-medium text-lg">Plagiarism Score</span>
+              <span className="text-3xl font-bold" style={{ color: progressColor }}>
                 {score}%
               </span>
             </div>
@@ -130,31 +134,18 @@ export function PlagiarismChecker() {
               className="h-4"
               style={
                 {
-                  "--primary": progressColor,
+                  "--primary-foreground": progressColor,
+                  "backgroundColor": "hsl(var(--secondary))"
                 } as React.CSSProperties
               }
             />
-            <Alert variant={isPlagiarized ? "destructive" : "default"}>
+             <Alert variant={alertVariant} className={alertClasses}>
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>{getResultTitle()}</AlertTitle>
               <AlertDescription>
                 {reason}
               </AlertDescription>
             </Alert>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
-              <div>
-                <h3 className="font-semibold mb-2">Original Text</h3>
-                <div className={`p-4 rounded-md border ${isPlagiarized ? 'border-destructive/50' : ''} bg-muted/50 max-h-60 overflow-y-auto`}>
-                  <p className="text-sm whitespace-pre-wrap">{text1}</p>
-                </div>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">Comparison Text</h3>
-                <div className={`p-4 rounded-md border ${isPlagiarized ? 'border-destructive/50' : ''} bg-muted/50 max-h-60 overflow-y-auto`}>
-                  <p className="text-sm whitespace-pre-wrap">{text2}</p>
-                </div>
-              </div>
-            </div>
           </CardContent>
         </Card>
       )}
