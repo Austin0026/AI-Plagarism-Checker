@@ -1,33 +1,72 @@
-import { PlagiarismChecker } from '@/components/plagiarism-checker';
-import { QuizSystem } from '@/components/quiz-system';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import Link from 'next/link';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { TestForgeLogo } from '@/components/icons';
+import { BookOpen, User } from 'lucide-react';
 
 export default function Home() {
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
-      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-        <div className="mx-auto grid w-full max-w-6xl gap-2 pt-8 text-center">
-          <h1 className="text-3xl font-bold tracking-tighter md:text-5xl">
-            AI Plagiarism & Quiz Generator
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            Check for semantic similarity or generate a quiz from your content.
+      <header className="p-4 border-b">
+        <div className="container mx-auto flex items-center gap-2">
+          <TestForgeLogo className="h-6 w-6" />
+          <span className="text-xl font-bold">TestForge</span>
+        </div>
+      </header>
+      <main className="flex flex-1 flex-col items-center justify-center gap-8 p-4 text-center">
+        <div className="space-y-4">
+          <div className="inline-flex items-center justify-center gap-4">
+            <TestForgeLogo className="h-16 w-16 text-primary" />
+            <h1 className="text-5xl font-extrabold tracking-tight md:text-6xl">
+              TestForge
+            </h1>
+          </div>
+          <p className="text-lg text-muted-foreground md:text-xl">
+            AI-powered test generation and plagiarism detection. Create engaging
+            <br />
+            assessments for students, effortlessly.
           </p>
         </div>
 
-        <div className="mx-auto w-full max-w-6xl">
-          <Tabs defaultValue="plagiarism-checker">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="plagiarism-checker">Plagiarism Checker</TabsTrigger>
-              <TabsTrigger value="quiz-generator">Quiz Generator</TabsTrigger>
-            </TabsList>
-            <TabsContent value="plagiarism-checker">
-              <PlagiarismChecker />
-            </TabsContent>
-            <TabsContent value="quiz-generator">
-              <QuizSystem />
-            </TabsContent>
-          </Tabs>
+        <div className="grid w-full max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
+          <Card className="text-left shadow-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BookOpen className="h-6 w-6 text-primary" />
+                For Teachers
+              </CardTitle>
+              <CardDescription>
+                Upload content, generate tests, and review student results.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Link href="/teacher">
+                <Button size="lg" className="w-full">
+                  Teacher Portal
+                  <span aria-hidden="true" className="ml-2">→</span>
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+          <Card className="text-left shadow-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <User className="h-6 w-6 text-primary" />
+                For Students
+              </CardTitle>
+              <CardDescription>
+                Take tests using a unique code provided by your teacher.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+               <Link href="/student">
+                <Button size="lg" className="w-full">
+                  Student Portal
+                  <span aria-hidden="true" className="ml-2">→</span>
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
         </div>
       </main>
     </div>

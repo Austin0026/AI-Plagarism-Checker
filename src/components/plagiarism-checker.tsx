@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useActionState } from "react";
+import { useEffect, useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { checkPlagiarism } from "@/app/actions";
 import { Button } from "@/components/ui/button";
@@ -38,8 +38,6 @@ function SubmitButton() {
 
 export function PlagiarismChecker() {
   const [state, formAction] = useActionState(checkPlagiarism, initialState);
-  const [text1, setText1] = useState("");
-  const [text2, setText2] = useState("");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -88,11 +86,8 @@ export function PlagiarismChecker() {
                 name="text1"
                 placeholder="Paste the first text here..."
                 className="min-h-[300px] resize-y text-base"
-                value={text1}
-                onChange={(e) => setText1(e.target.value)}
                 required
               />
-              <p className={`mt-2 text-sm ${text1.length < 100 ? 'text-destructive' : 'text-muted-foreground'}`}>{text1.length} / 100 characters minimum</p>
             </CardContent>
           </Card>
           <Card className="shadow-lg">
@@ -104,11 +99,8 @@ export function PlagiarismChecker() {
                 name="text2"
                 placeholder="Paste the second text here..."
                 className="min-h-[300px] resize-y text-base"
-                value={text2}
-                onChange={(e) => setText2(e.target.value)}
                 required
               />
-              <p className={`mt-2 text-sm ${text2.length < 100 ? 'text-destructive' : 'text-muted-foreground'}`}>{text2.length} / 100 characters minimum</p>
             </CardContent>
           </Card>
         </div>

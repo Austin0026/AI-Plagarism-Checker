@@ -9,42 +9,56 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/
 export function QuizSystem() {
   const [quiz, setQuiz] = useState<GenerateQuizOutput | null>(null);
   const [view, setView] = useState<'teacher' | 'student'>('teacher');
-  const [studentAnswers, setStudentAnswers] = useState<string[]>([]);
-  const [results, setResults] = useState<{ score: number, reason: string }[] | null>(null);
-
+  
   const handleQuizGenerated = (generatedQuiz: GenerateQuizOutput) => {
     setQuiz(generatedQuiz);
     setView('student');
-    setStudentAnswers(new Array(generatedQuiz.questions.length).fill(''));
-    setResults(null);
   };
 
   const handleStartOver = () => {
     setQuiz(null);
     setView('teacher');
-    setStudentAnswers([]);
-    setResults(null);
   }
 
   return (
-    <Card className="shadow-lg mt-6">
+    <Card className="shadow-lg mt-6 w-full">
       <CardHeader>
-        <CardTitle>Quiz Generator</CardTitle>
+        <CardTitle>Create a New Quiz</CardTitle>
         <CardDescription>
           {view === 'teacher' 
             ? 'Generate a quiz from a topic and content for your students.'
-            : 'Answer the questions below.'}
+            : 'Review the generated quiz below. Students will only see the questions.'}
         </CardDescription>
       </CardHeader>
       <CardContent>
         {view === 'teacher' && <TeacherView onQuizGenerated={handleQuizGenerated} />}
         {view === 'student' && quiz && (
-          <StudentView 
-            quiz={quiz} 
-            onStartOver={handleStartOver}
-          />
+          <div>
+            <h2 className="text-2xl font-bold mb-4">Generated Quiz</h2>
+            <Accordion type="single" collapsible className="w-full">
+              {quiz.questions.map((q, index) => (
+                <AccordionItem value={`item-${index}`} key={index}>
+                  <AccordionTrigger>
+                    <span className="font-semibold">Q{index + 1}: {q.question}</span>
+                  </AccordionTrigger>
+                  <AccordionContent className="bg-muted/50 p-4 rounded-md">
+                      <p className="font-semibold">Answer:</p>
+                      <p className="text-muted-foreground">{q.answer}</p>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+            <div className="mt-6 flex gap-4">
+              <Button onClick={handleStartOver} variant="outline" size="lg">Create New Quiz</Button>
+              <Button size="lg">Share with Students</Button>
+            </div>
+          </div>
         )}
       </CardContent>
     </Card>
   );
 }
+
+// Dummy components to avoid breaking the code, will be filled out later.
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Button } from './ui/button';
