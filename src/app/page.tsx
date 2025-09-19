@@ -9,8 +9,8 @@ export default function Home() {
     <div className="flex min-h-screen w-full flex-col bg-background">
       <header className="p-4 border-b">
         <div className="container mx-auto flex items-center gap-2">
-          
-          <span className="text-xl font-bold"></span>
+          <TestForgeLogo className="h-6 w-6" />
+          <span className="text-xl font-bold">SimiText</span>
         </div>
       </header>
       <main className="flex flex-1 flex-col items-center justify-center gap-8 p-4 text-center">
