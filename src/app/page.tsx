@@ -15,6 +15,12 @@ export default function Home() {
       </header>
       <main className="flex flex-1 flex-col items-center justify-center gap-8 p-4 text-center">
         <div className="space-y-4">
+           <div className="inline-flex items-center justify-center gap-4">
+            <TestForgeLogo className="h-16 w-16 text-primary" />
+            <h1 className="text-5xl font-extrabold tracking-tight md:text-6xl">
+              SimiText
+            </h1>
+          </div>
           <p className="text-lg text-muted-foreground md:text-xl">
             Powerful AI tools for plagiarism detection and quiz generation.
           </p>
