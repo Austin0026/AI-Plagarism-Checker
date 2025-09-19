@@ -1,6 +1,27 @@
+import { StudentQuiz } from '@/components/student-quiz';
 import { TestForgeLogo } from '@/components/icons';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
+
+// This is mock data. In a real application, you would fetch this from a database
+// using the quiz code from the URL.
+const MOCK_QUIZ_DATA = {
+  topic: 'The American Revolution',
+  questions: [
+    {
+      question: 'What was the primary cause of the Boston Tea Party?',
+      answer: 'The primary cause of the Boston Tea Party was the 1773 Tea Act, which allowed the British East India Company to sell tea from China in American colonies without paying taxes apart from the Townshend Acts.',
+    },
+    {
+      question: 'Who was the main author of the Declaration of Independence?',
+      answer: 'The main author of the Declaration of Independence was Thomas Jefferson.',
+    },
+    {
+      question: 'What battle is considered the turning point of the American Revolution?',
+      answer: 'The Battle of Saratoga, which occurred in 1777, is widely considered the turning point of the American Revolution.',
+    },
+  ],
+};
+
 
 interface StudentQuizPageProps {
   params: {
@@ -9,9 +30,6 @@ interface StudentQuizPageProps {
 }
 
 export default function StudentQuizPage({ params }: StudentQuizPageProps) {
-  // In a real application, you would fetch the quiz data using the code.
-  // For this prototype, we'll just display a placeholder.
-
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
        <header className="p-4 border-b bg-background">
@@ -23,18 +41,7 @@ export default function StudentQuizPage({ params }: StudentQuizPageProps) {
         </div>
       </header>
       <main className="flex flex-1 flex-col items-center justify-center gap-4 p-4">
-        <Card className="w-full max-w-2xl shadow-lg">
-            <CardHeader className="text-center">
-                <CardTitle className="text-2xl">Quiz Time!</CardTitle>
-                <CardDescription>Test Code: <span className="font-mono font-bold">{params.code}</span></CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="text-center p-8">
-                  <p className="text-muted-foreground">The quiz taking interface will be built here.</p>
-                  <p className="text-muted-foreground mt-2">For now, this page confirms that you've entered a code.</p>
-                </div>
-            </CardContent>
-        </Card>
+        <StudentQuiz code={params.code} quizData={MOCK_QUIZ_DATA} />
       </main>
     </div>
   );

@@ -87,6 +87,7 @@ export function PlagiarismChecker() {
                 placeholder="Paste the first text here..."
                 className="min-h-[300px] resize-y text-base"
                 required
+                minLength={100}
               />
             </CardContent>
           </Card>
@@ -100,6 +101,7 @@ export function PlagiarismChecker() {
                 placeholder="Paste the second text here..."
                 className="min-h-[300px] resize-y text-base"
                 required
+                minLength={100}
               />
             </CardContent>
           </Card>

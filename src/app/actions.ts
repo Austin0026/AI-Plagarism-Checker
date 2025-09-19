@@ -5,8 +5,8 @@ import { generateQuiz, GenerateQuizOutput } from "@/ai/flows/generate-quiz";
 import { z } from "zod";
 
 const PlagiarismCheckSchema = z.object({
-  text1: z.string().min(100, "Text 1 must be at least 100 characters long."),
-  text2: z.string().min(100, "Text 2 must be at least 100 characters long."),
+  text1: z.string(),
+  text2: z.string(),
 });
 
 type PlagiarismState = {
@@ -26,6 +26,10 @@ export async function checkPlagiarism(
 
   if (!validatedFields.success) {
     const fieldErrors = validatedFields.error.flatten().fieldErrors;
+    // For student quiz, empty answers are fine, so don't return an error.
+    if (formData.get('text1') === null || formData.get('text2') === null) {
+      return { score: 0, reason: "No input provided." };
+    }
     return {
       error: fieldErrors.text1?.[0] 
           || fieldErrors.text2?.[0]
@@ -34,6 +38,11 @@ export async function checkPlagiarism(
   }
   
   const { text1, text2 } = validatedFields.data;
+  
+  // If either text is very short or empty, it's not plagiarism.
+  if (text1.length < 10 || text2.length < 10) {
+    return { score: 0, reason: 'One or both texts were too short for a meaningful comparison.' };
+  }
 
   try {
     const result = await calculateSimilarity({ text1, text2 });
