@@ -1,3 +1,7 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { TestForgeLogo } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,6 +10,16 @@ import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 
 export default function StudentPage() {
+  const [code, setCode] = useState('');
+  const router = useRouter();
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (code.trim()) {
+      router.push(`/student/${code.trim()}`);
+    }
+  };
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
        <header className="p-4 border-b bg-background">
@@ -23,13 +37,18 @@ export default function StudentPage() {
                 <CardDescription>Enter the code from your teacher to begin the test.</CardDescription>
             </CardHeader>
             <CardContent>
-                <div className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-2">
                         <Label htmlFor="test-code">Test Code</Label>
-                        <Input id="test-code" placeholder="Enter code here" />
+                        <Input 
+                          id="test-code" 
+                          placeholder="Enter code here" 
+                          value={code}
+                          onChange={(e) => setCode(e.target.value)}
+                        />
                     </div>
-                    <Button className="w-full" size="lg">Start Test</Button>
-                </div>
+                    <Button type="submit" className="w-full" size="lg">Start Test</Button>
+                </form>
             </CardContent>
         </Card>
       </main>
