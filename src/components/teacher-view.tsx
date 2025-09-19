@@ -14,6 +14,7 @@ import { Slider } from './ui/slider';
 
 const initialState = {
   quiz: undefined,
+  topic: undefined,
   error: undefined,
 };
 
@@ -34,7 +35,7 @@ function SubmitButton() {
 }
 
 interface TeacherViewProps {
-  onQuizGenerated: (quiz: GenerateQuizOutput) => void;
+  onQuizGenerated: (quiz: GenerateQuizOutput, topic: string) => void;
 }
 
 export function TeacherView({ onQuizGenerated }: TeacherViewProps) {
@@ -49,8 +50,8 @@ export function TeacherView({ onQuizGenerated }: TeacherViewProps) {
         description: state.error,
       });
     }
-    if (state.quiz) {
-      onQuizGenerated(state.quiz);
+    if (state.quiz && state.topic) {
+      onQuizGenerated(state.quiz, state.topic);
     }
   }, [state, onQuizGenerated, toast]);
 

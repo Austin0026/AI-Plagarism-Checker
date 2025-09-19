@@ -2,6 +2,8 @@ import { QuizSystem } from '@/components/quiz-system';
 import { TestForgeLogo } from '@/components/icons';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 export default function TeacherPage() {
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">

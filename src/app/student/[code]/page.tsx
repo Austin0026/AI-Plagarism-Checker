@@ -1,27 +1,10 @@
 import { StudentQuiz } from '@/components/student-quiz';
 import { TestForgeLogo } from '@/components/icons';
 import Link from 'next/link';
-
-// This is mock data. In a real application, you would fetch this from a database
-// using the quiz code from the URL.
-const MOCK_QUIZ_DATA = {
-  topic: 'The American Revolution',
-  questions: [
-    {
-      question: 'What was the primary cause of the Boston Tea Party?',
-      answer: 'The primary cause of the Boston Tea Party was the 1773 Tea Act, which allowed the British East India Company to sell tea from China in American colonies without paying taxes apart from the Townshend Acts.',
-    },
-    {
-      question: 'Who was the main author of the Declaration of Independence?',
-      answer: 'The main author of the Declaration of Independence was Thomas Jefferson.',
-    },
-    {
-      question: 'What battle is considered the turning point of the American Revolution?',
-      answer: 'The Battle of Saratoga, which occurred in 1777, is widely considered the turning point of the American Revolution.',
-    },
-  ],
-};
-
+import { getQuiz } from '@/app/actions';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 interface StudentQuizPageProps {
   params: {
@@ -29,7 +12,34 @@ interface StudentQuizPageProps {
   };
 }
 
-export default function StudentQuizPage({ params }: StudentQuizPageProps) {
+export default async function StudentQuizPage({ params }: StudentQuizPageProps) {
+  const quizData = await getQuiz(params.code);
+
+  const renderContent = () => {
+    if (!quizData) {
+      return (
+         <Card className="w-full max-w-md">
+           <CardHeader>
+            <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>
+                  Invalid quiz code. Please check the code and try again.
+                </AlertDescription>
+              </Alert>
+           </CardHeader>
+          <CardContent>
+            <Link href="/student" className="text-center w-full block underline">
+                Go back to Student Portal
+            </Link>
+          </CardContent>
+         </Card>
+      );
+    }
+    return <StudentQuiz code={params.code} quizData={quizData} />;
+  }
+
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
        <header className="p-4 border-b bg-background">
@@ -41,7 +51,7 @@ export default function StudentQuizPage({ params }: StudentQuizPageProps) {
         </div>
       </header>
       <main className="flex flex-1 flex-col items-center justify-center gap-4 p-4">
-        <StudentQuiz code={params.code} quizData={MOCK_QUIZ_DATA} />
+        {renderContent()}
       </main>
     </div>
   );

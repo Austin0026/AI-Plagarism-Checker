@@ -3,6 +3,34 @@
 import { calculateSimilarity } from "@/ai/flows/calculate-similarity";
 import { generateQuiz, GenerateQuizOutput } from "@/ai/flows/generate-quiz";
 import { z } from "zod";
+import fs from 'fs/promises';
+import path from 'path';
+
+// Define the path for the mock database file
+const dbPath = path.join(process.cwd(), 'src', 'lib', 'quiz-data.json');
+
+// Type for the quiz data structure in the JSON file
+type QuizDatabase = {
+  [code: string]: GenerateQuizOutput & { topic: string };
+};
+
+// Function to read the mock database
+async function readDb(): Promise<QuizDatabase> {
+  try {
+    await fs.access(dbPath);
+    const data = await fs.readFile(dbPath, 'utf-8');
+    return JSON.parse(data);
+  } catch (error) {
+    // If the file doesn't exist, return an empty object
+    return {};
+  }
+}
+
+// Function to write to the mock database
+async function writeDb(data: QuizDatabase): Promise<void> {
+  await fs.writeFile(dbPath, JSON.stringify(data, null, 2), 'utf-8');
+}
+
 
 const PlagiarismCheckSchema = z.object({
   text1: z.string(),
@@ -67,6 +95,7 @@ const QuizGenerationSchema = z.object({
 
 export type QuizGenerationState = {
   quiz?: GenerateQuizOutput;
+  topic?: string;
   error?: string;
 };
 
@@ -95,12 +124,38 @@ export async function createQuiz(
   try {
     const quiz = await generateQuiz({ topic, content, questionCount });
     if (quiz && quiz.questions) {
-      return { quiz };
+      return { quiz, topic };
     }
     return { error: "Failed to generate a quiz from the provided content." };
   } catch (e) {
     console.error(e);
     const errorMessage = e instanceof Error ? e.message : "An unknown error occurred.";
     return { error: `An unexpected error occurred: ${errorMessage}` };
+  }
+}
+
+// Action to save a quiz to the mock database
+export async function saveQuiz(quizData: GenerateQuizOutput & { topic: string }): Promise<{ code?: string; error?: string }> {
+  try {
+    const db = await readDb();
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    db[code] = quizData;
+    await writeDb(db);
+    return { code };
+  } catch (e) {
+    console.error(e);
+    const errorMessage = e instanceof Error ? e.message : "An unknown error occurred.";
+    return { error: `Failed to save quiz: ${errorMessage}` };
+  }
+}
+
+// Action to get a quiz from the mock database
+export async function getQuiz(code: string): Promise<(GenerateQuizOutput & { topic: string }) | null> {
+  try {
+    const db = await readDb();
+    return db[code] || null;
+  } catch (e) {
+    console.error(e);
+    return null;
   }
 }

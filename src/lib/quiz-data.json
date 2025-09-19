@@ -1,0 +1,15 @@
+{
+  "123456": {
+    "questions": [
+      {
+        "question": "What was the primary cause of the Boston Tea Party?",
+        "answer": "The primary cause of the Boston Tea Party was the 1773 Tea Act, which allowed the British East India Company to sell tea from China in American colonies without paying taxes apart from the Townshend Acts."
+      },
+      {
+        "question": "Who was the main author of the Declaration of Independence?",
+        "answer": "The main author of the Declaration of Independence was Thomas Jefferson."
+      }
+    ],
+    "topic": "The American Revolution"
+  }
+}

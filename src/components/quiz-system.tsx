@@ -15,33 +15,49 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { Copy } from 'lucide-react';
+import { Copy, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { saveQuiz } from '@/app/actions';
 
 export function QuizSystem() {
   const [quiz, setQuiz] = useState<GenerateQuizOutput | null>(null);
+  const [topic, setTopic] = useState<string | null>(null);
   const [view, setView] = useState<'teacher' | 'student'>('teacher');
   const [quizCode, setQuizCode] = useState<string | null>(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
-  const handleQuizGenerated = (generatedQuiz: GenerateQuizOutput) => {
+  const handleQuizGenerated = (generatedQuiz: GenerateQuizOutput, quizTopic: string) => {
     setQuiz(generatedQuiz);
+    setTopic(quizTopic);
     setView('student');
   };
 
   const handleStartOver = () => {
     setQuiz(null);
+    setTopic(null);
     setQuizCode(null);
     setView('teacher');
   }
 
-  const handleShare = () => {
-    // In a real app, this would save the quiz to a database and generate a unique code.
-    // For this prototype, we'll generate a simple random code.
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-    setQuizCode(code);
-    setIsShareModalOpen(true);
+  const handleShare = async () => {
+    if (!quiz || !topic) return;
+
+    setIsSaving(true);
+    const result = await saveQuiz({ ...quiz, topic });
+    setIsSaving(false);
+
+    if (result.code) {
+      setQuizCode(result.code);
+      setIsShareModalOpen(true);
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: result.error || "Failed to save the quiz.",
+      });
+    }
   };
   
   const copyToClipboard = () => {
@@ -70,7 +86,7 @@ export function QuizSystem() {
           {view === 'teacher' && <TeacherView onQuizGenerated={handleQuizGenerated} />}
           {view === 'student' && quiz && (
             <div>
-              <h2 className="text-2xl font-bold mb-4">Generated Quiz</h2>
+              <h2 className="text-2xl font-bold mb-4">{topic}</h2>
               <Accordion type="single" collapsible className="w-full">
                 {quiz.questions.map((q, index) => (
                   <AccordionItem value={`item-${index}`} key={index}>
@@ -86,7 +102,10 @@ export function QuizSystem() {
               </Accordion>
               <div className="mt-6 flex gap-4">
                 <Button onClick={handleStartOver} variant="outline" size="lg">Create New Quiz</Button>
-                <Button onClick={handleShare} size="lg">Share with Students</Button>
+                <Button onClick={handleShare} size="lg" disabled={isSaving}>
+                  {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                  Share with Students
+                </Button>
               </div>
             </div>
           )}
