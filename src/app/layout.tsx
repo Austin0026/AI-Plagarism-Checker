@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'SimiText',
+  title: 'EduCheck',
   description: 'AI-powered plagiarism detection and test generation.',
 };
 

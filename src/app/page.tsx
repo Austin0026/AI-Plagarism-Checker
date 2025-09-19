@@ -10,7 +10,7 @@ export default function Home() {
       <header className="p-4 border-b">
         <div className="container mx-auto flex items-center gap-2">
           <TestForgeLogo className="h-6 w-6" />
-          <span className="text-xl font-bold">SimiText</span>
+          <span className="text-xl font-bold">EduCheck</span>
         </div>
       </header>
       <main className="flex flex-1 flex-col items-center justify-center gap-8 p-4 text-center">
@@ -18,7 +18,7 @@ export default function Home() {
            <div className="inline-flex items-center justify-center gap-4">
             <TestForgeLogo className="h-16 w-16 text-primary" />
             <h1 className="text-5xl font-extrabold tracking-tight md:text-6xl">
-              SimiText
+              EduCheck
             </h1>
           </div>
           <p className="text-lg text-muted-foreground md:text-xl">

@@ -10,7 +10,7 @@ export default function PlagiarismCheckerPage() {
         <div className="container mx-auto flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2">
             <TestForgeLogo className="h-6 w-6" />
-            <span className="text-xl font-bold">SimiText</span>
+            <span className="text-xl font-bold">EduCheck</span>
           </Link>
         </div>
       </header>
