@@ -5,7 +5,7 @@ import { Scale } from 'lucide-react';
 
 export default function PlagiarismCheckerPage() {
   return (
-    <div className="flex min-h-screen w-full flex-col bg-muted/40">
+    <div className="flex min-h-screen w-full flex-col bg-background">
        <header className="p-4 border-b bg-background">
         <div className="container mx-auto flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2">
