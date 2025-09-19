@@ -15,9 +15,6 @@ export default function Home() {
       </header>
       <main className="flex flex-1 flex-col items-center justify-center gap-8 p-4 text-center">
         <div className="space-y-4">
-          <h1 className="text-5xl font-extrabold tracking-tight md:text-6xl">
-            Choose Your Tool
-          </h1>
           <p className="text-lg text-muted-foreground md:text-xl">
             Powerful AI tools for plagiarism detection and quiz generation.
           </p>
