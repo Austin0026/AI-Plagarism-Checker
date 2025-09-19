@@ -26,7 +26,7 @@ export default function StudentPage() {
         <div className="container mx-auto flex items-center gap-2">
           <Link href="/quiz" className="flex items-center gap-2">
             <TestForgeLogo className="h-6 w-6" />
-            <span className="text-xl font-bold">TestForge</span>
+            <span className="text-xl font-bold">Quick Test</span>
           </Link>
         </div>
       </header>

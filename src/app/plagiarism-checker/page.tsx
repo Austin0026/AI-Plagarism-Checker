@@ -10,7 +10,7 @@ export default function PlagiarismCheckerPage() {
         <div className="container mx-auto flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2">
             <TestForgeLogo className="h-6 w-6" />
-            <span className="text-xl font-bold">AI Tools for Education</span>
+            <span className="text-xl font-bold">SimiText</span>
           </Link>
         </div>
       </header>
@@ -19,7 +19,7 @@ export default function PlagiarismCheckerPage() {
           <div className="flex items-center gap-3">
              <Scale className="h-8 w-8 text-primary" />
             <h1 className="text-3xl font-bold tracking-tighter">
-              SimiText AI Plagiarism Checker
+              AI Plagiarism Checker
             </h1>
           </div>
           <p className="text-lg text-muted-foreground">

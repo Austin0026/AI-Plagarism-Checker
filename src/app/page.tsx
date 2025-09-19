@@ -10,7 +10,7 @@ export default function Home() {
       <header className="p-4 border-b">
         <div className="container mx-auto flex items-center gap-2">
           <TestForgeLogo className="h-6 w-6" />
-          <span className="text-xl font-bold">AI Tools for Education</span>
+          <span className="text-xl font-bold">SimiText</span>
         </div>
       </header>
       <main className="flex flex-1 flex-col items-center justify-center gap-8 p-4 text-center">
@@ -28,7 +28,7 @@ export default function Home() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Scale className="h-6 w-6 text-primary" />
-                SimiText Plagiarism Checker
+                Plagiarism Checker
               </CardTitle>
               <CardDescription>
                 Analyze two texts for semantic similarity and detect potential plagiarism.
@@ -47,7 +47,7 @@ export default function Home() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <BookOpen className="h-6 w-6 text-primary" />
-                TestForge Quiz System
+                Quick Test
               </CardTitle>
               <CardDescription>
                 Generate quizzes for students and manage assessments.

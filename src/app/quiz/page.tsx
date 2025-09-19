@@ -11,7 +11,7 @@ export default function QuizHomePage() {
         <div className="container mx-auto flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2">
             <TestForgeLogo className="h-6 w-6" />
-            <span className="text-xl font-bold">AI Tools for Education</span>
+            <span className="text-xl font-bold">SimiText</span>
           </Link>
         </div>
       </header>
@@ -20,7 +20,7 @@ export default function QuizHomePage() {
           <div className="inline-flex items-center justify-center gap-4">
             <TestForgeLogo className="h-16 w-16 text-primary" />
             <h1 className="text-5xl font-extrabold tracking-tight md:text-6xl">
-              TestForge
+              Quick Test
             </h1>
           </div>
           <p className="text-lg text-muted-foreground md:text-xl">
