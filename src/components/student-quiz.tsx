@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useActionState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { useFormStatus } from 'react-dom';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { checkPlagiarism } from '@/app/actions';
 import { Loader2, AlertCircle } from 'lucide-react';
-import { Progress } from './ui/progress';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 
 type QuizQuestion = {
@@ -67,43 +66,21 @@ export function StudentQuiz({ code, quizData }: StudentQuizProps) {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     startTransition(async () => {
-      const analysisPromises = quizData.questions.map(async (q, index) => {
-        const studentAnswer = studentAnswers[index];
-        const plagiarismResult = await checkPlagiarism({}, new FormData(event.target as HTMLFormElement));
-        
-        // We're simulating the check here for each answer
-        const response = await fetch('/api/check-plagiarism', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ text1: studentAnswer, text2: q.answer })
-        });
-        const { score, reason } = await response.json();
-
-        return { score, reason, studentAnswer };
-      });
-
       const analysisResults = await Promise.all(
         quizData.questions.map(async (q, index) => {
-           const result = await checkPlagiarism({}, new FormData(document.createElement('form')))
-           const studentAnswer = studentAnswers[index] || ""
-           const analysisResult = await checkPlagiarism(
-             { score: 0, reason: '' },
-             new FormData(document.createElement('form'))
-                .append('text1', studentAnswer)
-                .append('text2', q.answer) as unknown as FormData
-           );
+          const studentAnswer = studentAnswers[index] || ""
            
-           const formData = new FormData();
-           formData.append('text1', studentAnswer);
-           formData.append('text2', q.answer);
+          const formData = new FormData();
+          formData.append('text1', studentAnswer);
+          formData.append('text2', q.answer);
 
-           const singleResult = await checkPlagiarism({ score: 0, reason: ''}, formData);
+          const singleResult = await checkPlagiarism({ score: 0, reason: ''}, formData);
 
-           return { 
-               score: singleResult.score ?? 0, 
-               reason: singleResult.reason ?? 'No analysis available.', 
-               studentAnswer 
-            };
+          return { 
+              score: singleResult.score ?? 0, 
+              reason: singleResult.reason ?? 'No analysis available.', 
+              studentAnswer 
+          };
         })
       );
 

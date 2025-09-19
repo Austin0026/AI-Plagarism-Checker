@@ -11,5 +11,22 @@
       }
     ],
     "topic": "The American Revolution"
+  },
+  "209782": {
+    "questions": [
+      {
+        "question": "What is quantum entanglement?",
+        "answer": "A phenomenon where two or more particles become linked, and their states are correlated, regardless of the distance between them."
+      },
+      {
+        "question": "Explain the concept of wave-particle duality in quantum physics.",
+        "answer": "Wave-particle duality states that particles, like electrons and photons, can exhibit both wave-like and particle-like properties."
+      },
+      {
+        "question": "What does the Heisenberg Uncertainty Principle state?",
+        "answer": "It is impossible to know both the exact position and momentum of a particle at the same time."
+      }
+    ],
+    "topic": "Quantum Physics"
   }
 }
