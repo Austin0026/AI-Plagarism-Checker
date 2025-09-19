@@ -10,7 +10,7 @@ export default function StudentPage() {
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
        <header className="p-4 border-b bg-background">
         <div className="container mx-auto flex items-center gap-2">
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/quiz" className="flex items-center gap-2">
             <TestForgeLogo className="h-6 w-6" />
             <span className="text-xl font-bold">TestForge</span>
           </Link>

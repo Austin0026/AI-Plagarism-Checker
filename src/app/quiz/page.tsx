@@ -2,24 +2,31 @@ import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { TestForgeLogo } from '@/components/icons';
-import { BookOpen, Scale } from 'lucide-react';
+import { BookOpen, User } from 'lucide-react';
 
-export default function Home() {
+export default function QuizHomePage() {
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
       <header className="p-4 border-b">
         <div className="container mx-auto flex items-center gap-2">
-          <TestForgeLogo className="h-6 w-6" />
-          <span className="text-xl font-bold">AI Tools for Education</span>
+          <Link href="/" className="flex items-center gap-2">
+            <TestForgeLogo className="h-6 w-6" />
+            <span className="text-xl font-bold">AI Tools for Education</span>
+          </Link>
         </div>
       </header>
       <main className="flex flex-1 flex-col items-center justify-center gap-8 p-4 text-center">
         <div className="space-y-4">
-          <h1 className="text-5xl font-extrabold tracking-tight md:text-6xl">
-            Choose Your Tool
-          </h1>
+          <div className="inline-flex items-center justify-center gap-4">
+            <TestForgeLogo className="h-16 w-16 text-primary" />
+            <h1 className="text-5xl font-extrabold tracking-tight md:text-6xl">
+              TestForge
+            </h1>
+          </div>
           <p className="text-lg text-muted-foreground md:text-xl">
-            Powerful AI tools for plagiarism detection and quiz generation.
+            AI-powered test generation and plagiarism detection. Create engaging
+            <br />
+            assessments for students, effortlessly.
           </p>
         </div>
 
@@ -27,17 +34,17 @@ export default function Home() {
           <Card className="text-left shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Scale className="h-6 w-6 text-primary" />
-                SimiText Plagiarism Checker
+                <BookOpen className="h-6 w-6 text-primary" />
+                For Teachers
               </CardTitle>
               <CardDescription>
-                Analyze two texts for semantic similarity and detect potential plagiarism.
+                Upload content, generate tests, and review student results.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Link href="/plagiarism-checker">
+              <Link href="/teacher">
                 <Button size="lg" className="w-full">
-                  Open Plagiarism Checker
+                  Teacher Portal
                   <span aria-hidden="true" className="ml-2">→</span>
                 </Button>
               </Link>
@@ -46,17 +53,17 @@ export default function Home() {
           <Card className="text-left shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <BookOpen className="h-6 w-6 text-primary" />
-                TestForge Quiz System
+                <User className="h-6 w-6 text-primary" />
+                For Students
               </CardTitle>
               <CardDescription>
-                Generate quizzes for students and manage assessments.
+                Take tests using a unique code provided by your teacher.
               </CardDescription>
             </CardHeader>
             <CardContent>
-               <Link href="/quiz">
+               <Link href="/student">
                 <Button size="lg" className="w-full">
-                  Open Quiz System
+                  Student Portal
                   <span aria-hidden="true" className="ml-2">→</span>
                 </Button>
               </Link>

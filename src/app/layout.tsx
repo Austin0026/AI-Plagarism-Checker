@@ -3,8 +3,8 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'TestForge',
-  description: 'AI-powered test generation and plagiarism detection.',
+  title: 'AI Tools for Education',
+  description: 'AI-powered plagiarism detection and test generation.',
 };
 
 export default function RootLayout({
